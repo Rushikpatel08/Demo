@@ -3,6 +3,8 @@ package com.example.demo.Service;
 import com.example.demo.Entity.Mobile;
 import com.example.demo.Repository.mobileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,14 +16,19 @@ public class mobileService {
     @Autowired
     private mobileRepository MobileRepository;
 
-    public List<Mobile> getallmobile()
+    public Page<Mobile> getallmobile(Pageable pageable)
     {
-        return MobileRepository.findAll();
+        return MobileRepository.findAll(pageable);
     }
 
     public Mobile addMobile(Mobile mobile)
     {
         return MobileRepository.save(mobile);
+    }
+
+    public List<Mobile> getallmobilebybrand(String brand)
+    {
+        return MobileRepository.findByBrand(brand);
     }
 
     public void deletemobile(Long id)

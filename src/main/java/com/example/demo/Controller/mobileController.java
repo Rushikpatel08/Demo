@@ -3,23 +3,36 @@ package com.example.demo.Controller;
 import com.example.demo.Entity.Mobile;
 import com.example.demo.Service.mobileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @RestController
 @RequestMapping("/mobile")
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 public class mobileController {
 
 
     @Autowired
     private mobileService MobileService;
 
-    @GetMapping("/getallmobile")
-    public List<Mobile> displaymobile()
+
+    @GetMapping("/getallmobilebybrand/{brand}")
+    public List<Mobile> displaymobilebybrand(@PathVariable String brand)
     {
-        return MobileService.getallmobile();
+        return MobileService.getallmobilebybrand(brand);
+
+    }
+
+    @GetMapping("/getallmobile")
+    public Page<Mobile> displaymobile(@RequestParam(defaultValue = "0") int page,
+                                      @RequestParam(defaultValue = "2") int size)
+    {
+        Pageable pageable = PageRequest.of(page, size);
+        return MobileService.getallmobile(pageable);
 
     }
 
